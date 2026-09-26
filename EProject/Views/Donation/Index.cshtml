@@ -1,0 +1,115 @@
+@model IEnumerable<EProject.Models.Donation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CauseCategory)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DummyCardNumber)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ExpiryDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CVV)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+
+            <th>
+                User
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.NGOId)
+            </th>
+
+            <th>
+                NGO
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CauseCategory)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DummyCardNumber)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpiryDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CVV)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NGOId)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NGO.NGOName)
+                </td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.DonationId">
+                        Edit
+                    </a>
+                    |
+                    <a asp-action="Details"
+                       asp-route-id="@item.DonationId">
+                        Details
+                    </a>
+                    |
+                    <a asp-action="Delete"
+                       asp-route-id="@item.DonationId">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

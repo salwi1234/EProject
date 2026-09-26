@@ -1,0 +1,54 @@
+@model EProject.Models.Query
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Query</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="SenderName" class="control-label"></label>
+                <input asp-for="SenderName" class="form-control" />
+                <span asp-validation-for="SenderName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SenderEmail" class="control-label"></label>
+                <input asp-for="SenderEmail" class="form-control" />
+                <span asp-validation-for="SenderEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MessageContent" class="control-label"></label>
+                <input asp-for="MessageContent" class="form-control" />
+                <span asp-validation-for="MessageContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdminReply" class="control-label"></label>
+                <input asp-for="AdminReply" class="form-control" />
+                <span asp-validation-for="AdminReply" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IsResolved" class="control-label"></label>
+                <input asp-for="IsResolved" class="form-check-input" />
+                <span asp-validation-for="IsResolved" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
