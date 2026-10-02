@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260925231823_AddUserRole")]
-    partial class AddUserRole
+    [Migration("20261002192724_AddRemainingModels")]
+    partial class AddRemainingModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace EProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("EProject.Models.AboutPage", b =>
+                {
+                    b.Property<int>("AboutPageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AboutPageId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AboutPageId");
+
+                    b.ToTable("AboutPages");
+                });
 
             modelBuilder.Entity("EProject.Models.Donation", b =>
                 {
@@ -67,6 +95,60 @@ namespace EProject.Migrations
                     b.ToTable("Donation");
                 });
 
+            modelBuilder.Entity("EProject.Models.DonationCause", b =>
+                {
+                    b.Property<int>("DonationCauseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DonationCauseId"));
+
+                    b.Property<string>("CauseName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("DonationCauseId");
+
+                    b.ToTable("DonationCauses");
+                });
+
+            modelBuilder.Entity("EProject.Models.Gallery", b =>
+                {
+                    b.Property<int>("GalleryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GalleryId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GalleryId");
+
+                    b.ToTable("Galleries");
+                });
+
             modelBuilder.Entity("EProject.Models.NGO", b =>
                 {
                     b.Property<int>("NGOId")
@@ -97,6 +179,35 @@ namespace EProject.Migrations
                     b.ToTable("NGOs");
                 });
 
+            modelBuilder.Entity("EProject.Models.Partner", b =>
+                {
+                    b.Property<int>("PartnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartnerId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogoPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartnerName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PartnerId");
+
+                    b.ToTable("Partners");
+                });
+
             modelBuilder.Entity("EProject.Models.Programme", b =>
                 {
                     b.Property<int>("ProgrammeId")
@@ -124,6 +235,36 @@ namespace EProject.Migrations
                     b.HasIndex("NGOId");
 
                     b.ToTable("Programme");
+                });
+
+            modelBuilder.Entity("EProject.Models.ProgrammeParticipant", b =>
+                {
+                    b.Property<int>("ProgrammeParticipantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgrammeParticipantId"));
+
+                    b.Property<DateTime>("ParticipationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProgrammeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProgrammeParticipantId");
+
+                    b.HasIndex("ProgrammeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProgrammeParticipants");
                 });
 
             modelBuilder.Entity("EProject.Models.Query", b =>
@@ -189,8 +330,7 @@ namespace EProject.Migrations
 
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -223,6 +363,25 @@ namespace EProject.Migrations
                         .IsRequired();
 
                     b.Navigation("NGO");
+                });
+
+            modelBuilder.Entity("EProject.Models.ProgrammeParticipant", b =>
+                {
+                    b.HasOne("EProject.Models.Programme", "Programme")
+                        .WithMany()
+                        .HasForeignKey("ProgrammeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EProject.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Programme");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

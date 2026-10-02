@@ -1,34 +1,30 @@
-@model IEnumerable<EProject.Models.Programme>
+@model IEnumerable<EProject.Models.Partner>
 
 @{
-    ViewData["Title"] = "Programmes";
+    ViewData["Title"] = "Partners";
 }
 
 <div class="container mt-5">
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-
         <div>
-            <h1 class="fw-bold text-primary">Programmes</h1>
-            <p class="text-muted mb-0">
-                Manage NGO programmes and activities
+            <h1 class="fw-bold text-primary">Our Partners</h1>
+            <p class="text-muted">
+                Organizations supporting our mission
             </p>
         </div>
 
         <a asp-action="Create" class="btn btn-primary">
-            + Add Programme
+            + Add Partner
         </a>
-
     </div>
 
-    <!-- Programme Table -->
+    <!-- Partner Table -->
     <div class="card shadow border-0">
 
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">
-                Programme List
-            </h5>
+            <h5 class="mb-0">Partner List</h5>
         </div>
 
         <div class="card-body p-0">
@@ -37,27 +33,25 @@
 
                 <thead class="table-light">
                     <tr>
-
                         <th class="ps-4">
-                            Title
+                            Partner Name
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Logo
                         </th>
 
                         <th>
                             Description
                         </th>
 
-                        <th>
-                            Scheduled Date
-                        </th>
-
-                        <th>
-                            NGO
-                        </th>
-
                         <th class="text-center">
                             Actions
                         </th>
-
                     </tr>
                 </thead>
 
@@ -69,53 +63,56 @@
 
                             <td class="ps-4">
                                 <strong class="text-primary">
-                                    @item.Title
+                                    @item.PartnerName
                                 </strong>
                             </td>
 
                             <td>
                                 <span class="text-muted">
-                                    @item.Description
+                                    @item.Email
                                 </span>
                             </td>
 
                             <td>
-                                <span class="badge bg-light text-dark">
-                                    @item.ScheduledDate.ToString("dd MMM yyyy")
-                                </span>
-                            </td>
-
-                            <td>
-                                @if (item.NGO != null)
+                                @if (!string.IsNullOrEmpty(item.LogoPath))
                                 {
-                                    <span class="badge bg-success">
-                                        @item.NGO.NGOName
-                                    </span>
+                                    <img src="@item.LogoPath"
+                                         alt="Partner Logo"
+                                         width="60"
+                                         height="60"
+                                         class="rounded-circle border"
+                                         style="object-fit: cover;" />
                                 }
                                 else
                                 {
                                     <span class="badge bg-secondary">
-                                        No NGO
+                                        No Logo
                                     </span>
                                 }
+                            </td>
+
+                            <td>
+                                <span>
+                                    @item.Description
+                                </span>
                             </td>
 
                             <td class="text-center">
 
                                 <a asp-action="Edit"
-                                   asp-route-id="@item.ProgrammeId"
+                                   asp-route-id="@item.PartnerId"
                                    class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
 
                                 <a asp-action="Details"
-                                   asp-route-id="@item.ProgrammeId"
+                                   asp-route-id="@item.PartnerId"
                                    class="btn btn-sm btn-info text-white">
                                     Details
                                 </a>
 
                                 <a asp-action="Delete"
-                                   asp-route-id="@item.ProgrammeId"
+                                   asp-route-id="@item.PartnerId"
                                    class="btn btn-sm btn-danger">
                                     Delete
                                 </a>

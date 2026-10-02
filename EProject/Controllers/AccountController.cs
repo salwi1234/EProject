@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
-using System.ComponentModel;
+using System.Data;
 using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EProject.Controllers
 {
@@ -22,6 +21,8 @@ namespace EProject.Controllers
             _context = context;
         }
 
+
+
         // REGISTER - GET
 
         [HttpGet]
@@ -29,6 +30,7 @@ namespace EProject.Controllers
         {
             return View();
         }
+
 
 
         // REGISTER - POST
@@ -52,10 +54,17 @@ namespace EProject.Controllers
                     return View(user);
                 }
 
-                // Har new registered account normal User hoga
-                user.Role = "User";
+                // Admin and User Role
+                if (user.Email == "admin@gmail.com")
+                {
+                    user.Role = "Admin";
+                }
+                else
+                {
+                    user.Role = "User";
+                }
 
-                // Password ko hash karna
+                // Password hash
                 var passwordHasher = new PasswordHasher<User>();
 
                 user.password = passwordHasher.HashPassword(
@@ -63,7 +72,6 @@ namespace EProject.Controllers
                     user.password
                 );
 
-                // User database mein save
                 _context.users.Add(user);
 
                 await _context.SaveChangesAsync();
@@ -75,6 +83,7 @@ namespace EProject.Controllers
         }
 
 
+
         // LOGIN - GET
 
         [HttpGet]
@@ -82,6 +91,7 @@ namespace EProject.Controllers
         {
             return View();
         }
+
 
 
         // LOGIN - POST
@@ -92,7 +102,9 @@ namespace EProject.Controllers
             string email,
             string password)
         {
-            // Email se user find karo
+
+            // NORMAL USER LOGIN
+
             var user = await _context.users
                 .FirstOrDefaultAsync(u => u.Email == email);
 
@@ -102,23 +114,30 @@ namespace EProject.Controllers
                 return View();
             }
 
-            // Password hash verify karo
+
+
+            // Check hashed password
+
             var passwordHasher = new PasswordHasher<User>();
 
-            var passwordResult = passwordHasher.VerifyHashedPassword(
-                user,
-                user.password,
-                password
-            );
+            var passwordResult =
+                passwordHasher.VerifyHashedPassword(
+                    user,
+                    user.password,
+                    password
+                );
 
-            if (passwordResult == PasswordVerificationResult.Failed)
+
+            if (passwordResult ==
+                PasswordVerificationResult.Failed)
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
 
 
-            // Authentication Claims
+
+            // USER CLAIMS
 
             var claims = new List<Claim>
             {
@@ -160,7 +179,8 @@ namespace EProject.Controllers
             );
 
 
-            // Admin aur User ke different dashboards
+
+            // ROLE CHECK
 
             if (user.Role == "Admin")
             {
@@ -170,11 +190,15 @@ namespace EProject.Controllers
                 );
             }
 
+
+            // Normal User
+
             return RedirectToAction(
                 "Index",
                 "User"
             );
         }
+
 
 
         // LOGOUT
@@ -191,5 +215,4 @@ namespace EProject.Controllers
         }
     }
 }
-
 

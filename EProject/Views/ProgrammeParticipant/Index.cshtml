@@ -1,0 +1,158 @@
+
+@model IEnumerable<EProject.Models.ProgrammeParticipant>
+
+@{
+    ViewData["Title"] = "Programme Participants";
+}
+
+<div class="container mt-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold text-primary">
+                Programme Participants
+            </h1>
+
+            <p class="text-muted mb-0">
+                Manage users participating in NGO programmes
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-success px-4">
+            + Create New
+        </a>
+
+    </div>
+
+    <!-- Table Card -->
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0">
+                Participant Records
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-striped align-middle mb-0">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>User ID</th>
+
+                            <th>User</th>
+
+                            <th>Programme ID</th>
+
+                            <th>Programme</th>
+
+                            <th>Participation Date</th>
+
+                            <th>Status</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- User ID -->
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @item.UserId
+                                    </span>
+                                </td>
+
+                                <!-- User -->
+                                <td class="fw-semibold">
+                                    @item.User?.FullName
+                                </td>
+
+                                <!-- Programme ID -->
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        @item.ProgrammeId
+                                    </span>
+                                </td>
+
+                                <!-- Programme -->
+                                <td class="fw-semibold text-primary">
+                                    @item.Programme?.Title
+                                </td>
+
+                                <!-- Date -->
+                                <td>
+                                    @item.ParticipationDate.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+
+                                    @if (item.Status?.ToLower() == "active")
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            @item.Status
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="text-center">
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.ProgrammeParticipantId"
+                                       class="btn btn-sm btn-warning">
+                                        Edit
+                                    </a>
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.ProgrammeParticipantId"
+                                       class="btn btn-sm btn-info text-white">
+                                        Details
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.ProgrammeParticipantId"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

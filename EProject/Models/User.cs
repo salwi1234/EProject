@@ -20,7 +20,7 @@ namespace EProject.Models
         
         public string password {  get; set; }
 
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "Phone number must be exactly 11 digits")]
+        [RegularExpression(@"^\d{11,15}$", ErrorMessage = "Phone number must be between 11 and 15 digits")]
         public string  PhoneNumber { get; set; }
 
         [Required]
@@ -28,5 +28,10 @@ namespace EProject.Models
 
         public string Role { get; set; } = "User";
 
+  
+        
+           
+        }
+
     }
-}
+
